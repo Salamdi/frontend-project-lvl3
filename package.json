@@ -4,7 +4,8 @@
     "description": "",
     "scripts": {
         "build": "webpack",
-        "test": "jest --colors"
+        "test": "jest --colors",
+        "dev": "webpack serve"
     },
     "repository": {
         "type": "git",
@@ -51,6 +52,7 @@
         "bootstrap": "^5.1.1",
         "npm-check-updates": "^11.8.5",
         "sass": "^1.39.0",
-        "sass-loader": "^12.1.0"
+        "sass-loader": "^12.1.0",
+        "yup": "^0.32.11"
     }
 }
