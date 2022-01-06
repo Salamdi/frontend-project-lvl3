@@ -2,53 +2,41 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
-    <main>
-        <section class="container-fluid bg-dark p-5">
+  <main>
+    <section class="container-fluid bg-dark p-5">
+      <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto text-white">
+          <h1 class="display-3 mb-0">RSS Aggregator</h1>
+          <p class="lead">Start reading RSS today! It is easy, it is beautiful</p>
+          <form action id="rss-form" class="text-body">
             <div class="row">
-                <div class="col-md-10 col-lg-8 mx-auto text-white">
-                    <h1 class="display-3 mb-0">RSS Aggregator</h1>
-                    <p class="lead">Start reading RSS today! It is easy, it is beautiful</p>
-                    <form action id="rss-form" class="text-body">
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-floating">
-                                    <input
-                                        id="rss-input"
-                                        autofocus
-                                        required
-                                        name="url"
-                                        aria-label="url"
-                                        class="form-control w-100"
-                                        placeholder="RSS link"
-                                        autocomlete="off"
-                                    >
-                                    <label for="rss-input">RSS link</label>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <button
-                                    type="submit"
-                                    aria-label="add"
-                                    class="h-100 btn btn-lg btn-primary px-sm-5"
-                                >
-                                    Add
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <p class="mt-2 mb-0 text-muted">Example: https://ru.hexlet.io/lessons.rss</p>
-                    <p id="error-message" class="feedback m-0 position-absolute small text-danger d-none"></p>
+              <div class="col">
+                <div class="form-floating">
+                  <input id="rss-input" autofocus required name="url" aria-label="url" class="form-control w-100"
+                    placeholder="RSS link" autocomlete="off">
+                  <label for="rss-input">RSS link</label>
                 </div>
+              </div>
+              <div class="col-auto">
+                <button type="submit" aria-label="add" class="h-100 btn btn-lg btn-primary px-sm-5">
+                  Add
+                </button>
+              </div>
             </div>
-        </section>
-    </main>
+          </form>
+          <p class="mt-2 mb-0 text-muted">Example: https://ru.hexlet.io/lessons.rss</p>
+          <p id="error-message" class="feedback m-0 position-absolute small text-danger d-none"></p>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 
 </html>
