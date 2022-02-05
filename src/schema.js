@@ -1,13 +1,14 @@
 import * as yup from 'yup';
+import { INVALID_URL, URL_DUPLICATION } from './i18n';
 
 yup.setLocale({
   string: {
     url: {
-      default: 'invalid_url',
+      default: INVALID_URL,
     },
   },
   array: {
-    unique: 'url_duplication',
+    unique: URL_DUPLICATION,
   },
 });
 
