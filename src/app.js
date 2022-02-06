@@ -7,6 +7,7 @@ import renderSuccessMessage from './components/SuccessMessage';
 import renderFeeds from './components/Feeds';
 import renderPosts from './components/Posts';
 import renderSubmitButton from './components/SubmitButton';
+import renderRssInput from './components/rssInput';
 import { subscribe } from './subscribe';
 import i18nPromise, { INVALID_RSS, SUCCESS_MESSAGE, GENERIC_ERROR } from './i18n';
 import http from './http';
@@ -14,13 +15,14 @@ import parseXML from './parseXML';
 
 i18nPromise
   .then(() => console.log('initialized...'))
-  .catch(console.log);
+  .catch(console.error);
 
 subscribe(renderError);
 subscribe(renderFeeds);
 subscribe(renderPosts);
 subscribe(renderSubmitButton);
 subscribe(renderSuccessMessage);
+subscribe(renderRssInput);
 
 const rssForm = document.getElementById('rss-form');
 
