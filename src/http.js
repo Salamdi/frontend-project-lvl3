@@ -1,5 +1,8 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://hexlet-allorigins.herokuapp.com/',
+  baseURL: 'https://hexlet-allorigins.herokuapp.com/get',
+  params: {
+    disableCache: true,
+  },
 });

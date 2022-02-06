@@ -10,6 +10,7 @@ import renderSubmitButton from './components/SubmitButton';
 import { subscribe } from './subscribe';
 import i18nPromise, { INVALID_RSS, SUCCESS_MESSAGE, GENERIC_ERROR } from './i18n';
 import http from './http';
+import parseXML from './parseXML';
 
 i18nPromise
   .then(() => console.log('initialized...'))
@@ -33,7 +34,7 @@ rssForm.addEventListener('submit', (event) => {
       state.error = null;
       state.successMessage = null;
       state.loading = true;
-      return http.get('url', { params: { url } });
+      return http.get('', { params: { url } });
     })
     .then((response) => response.data)
     .then((data) => {
@@ -42,33 +43,16 @@ rssForm.addEventListener('submit', (event) => {
         error.message = { default: INVALID_RSS };
         throw error;
       }
-      return data;
+      return data.contents;
     })
-    .then((data) => {
-      const domParser = new DOMParser();
-      const xmlDocument = domParser.parseFromString(data.contents, 'application/xml');
-      if (!xmlDocument.documentElement) {
-        const error = new Error();
-        error.message = { default: INVALID_RSS };
-        throw error;
-      }
-      const title = xmlDocument.querySelector('channel title');
-      const description = xmlDocument.querySelector('channel description');
-      if (!title || !description) {
-        const error = new Error();
-        error.message = { default: INVALID_RSS };
-        throw error;
-      }
-      const items = xmlDocument.querySelectorAll('channel item');
-      const posts = Array.from(items)
-        .map((item) => ({
-          id: item.querySelector('guid').textContent,
-          title: item.querySelector('title').textContent,
-          description: item.querySelector('description').textContent,
-          link: item.querySelector('link').textContent,
-          pubDate: item.querySelector('pubDate').textContent,
-        }));
-      state.feeds.push({ title: title.textContent, description: description.textContent });
+    .then(parseXML)
+    .then(({
+      title,
+      description,
+      id,
+      posts,
+    }) => {
+      state.feeds.push({ title, description, id });
       state.posts = state.posts.concat(posts);
       state.rssUrls.push(url);
       state.successMessage = i18n.t(SUCCESS_MESSAGE);
@@ -77,6 +61,7 @@ rssForm.addEventListener('submit', (event) => {
       if (!error.message?.default) {
         state.error = i18n.t(GENERIC_ERROR);
       }
+      state.successMessage = null;
       state.error = i18n.t(error.message.default);
     })
     .finally(() => {
