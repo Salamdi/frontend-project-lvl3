@@ -7,9 +7,6 @@ yup.setLocale({
       default: INVALID_URL,
     },
   },
-  array: {
-    unique: URL_DUPLICATION,
-  },
 });
 
 export default yup.array()
@@ -24,4 +21,7 @@ export default yup.array()
       return !previousUrls.includes(lastUrl);
     },
     name: 'unique',
+    message: {
+      default: URL_DUPLICATION,
+    },
   });

@@ -3,7 +3,7 @@ import { handleChange } from './subscribe';
 
 const state = {
   error: null,
-  rssList: [],
+  rssUrls: [],
   feeds: [],
   posts: [],
 };

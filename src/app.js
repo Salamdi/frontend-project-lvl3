@@ -4,6 +4,7 @@ import schema from './schema';
 import state from './state';
 import renderError from './components/Error';
 import renderFeeds from './components/Feeds';
+import renderPosts from './components/Posts';
 import { subscribe } from './subscribe';
 import i18nPromise, { INVALID_RSS } from './i18n';
 import http from './http';
@@ -14,16 +15,18 @@ i18nPromise
 
 subscribe(renderError);
 subscribe(renderFeeds);
+subscribe(renderPosts);
 
 const submitRss = (rss) => Promise.resolve(rss);
 
 const rssForm = document.getElementById('rss-form');
 
 rssForm.addEventListener('submit', (event) => {
+  event.preventDefault();
   const formData = new FormData(event.target);
   const url = formData.get('url');
   schema
-    .validate([...state.rssList, url])
+    .validate([...state.rssUrls, url])
     .then(() => submitRss(url))
     .then(() => {
       state.error = null;
@@ -69,11 +72,10 @@ rssForm.addEventListener('submit', (event) => {
       return posts;
     })
     .then((posts) => {
-      state.posts.concat(posts);
+      state.posts = state.posts.concat(posts);
     })
-    .then(() => state.rssList.push(url))
+    .then(() => state.rssUrls.push(url))
     .catch((error) => {
       state.error = i18n.t(error.message.default);
     });
-  event.preventDefault();
 });

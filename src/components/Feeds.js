@@ -12,7 +12,7 @@ const render = (feedList) => {
           ${feed.description}
         </p>
       </li>
-    `);
+    `).join('\n');
     const card = `
       <div class="card border-0">
         <div class="card-body">
