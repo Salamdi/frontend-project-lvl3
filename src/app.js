@@ -8,6 +8,7 @@ import renderFeeds from './components/Feeds';
 import renderPosts from './components/Posts';
 import renderSubmitButton from './components/SubmitButton';
 import renderRssInput from './components/rssInput';
+import startWorker from './rssWorker';
 import { subscribe } from './subscribe';
 import i18nPromise, { INVALID_RSS, SUCCESS_MESSAGE, GENERIC_ERROR } from './i18n';
 import http from './http';
@@ -23,6 +24,7 @@ subscribe(renderPosts);
 subscribe(renderSubmitButton);
 subscribe(renderSuccessMessage);
 subscribe(renderRssInput);
+subscribe(startWorker);
 
 const rssForm = document.getElementById('rss-form');
 
