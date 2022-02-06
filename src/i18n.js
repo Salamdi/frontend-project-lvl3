@@ -6,6 +6,8 @@ export const INVALID_RSS = 'INVALID_RSS';
 export const FEEDS_TITLE = 'FEEDS_TITLE';
 export const POSTS_TITLE = 'POSTS_TITLE';
 export const SHOW = 'SHOW';
+export const SUCCESS_MESSAGE = 'SUCCESS_MESSAGE';
+export const GENERIC_ERROR = 'GENERIC_ERROR';
 
 export default i18next.init({
   debug: true,
@@ -19,6 +21,8 @@ export default i18next.init({
         [FEEDS_TITLE]: 'Feeds',
         [POSTS_TITLE]: 'Posts',
         [SHOW]: 'Show',
+        [SUCCESS_MESSAGE]: 'RSS has been successfully downloded',
+        [GENERIC_ERROR]: 'Something went wrong',
       },
     },
     ru: {
@@ -29,6 +33,8 @@ export default i18next.init({
         [FEEDS_TITLE]: 'Фиды',
         [POSTS_TITLE]: 'Посты',
         [SHOW]: 'Просмотр',
+        [SUCCESS_MESSAGE]: 'RSS успешно загружен',
+        [GENERIC_ERROR]: 'Что-то пошло не так',
       },
     },
   },

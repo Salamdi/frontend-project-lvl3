@@ -3,10 +3,12 @@ import i18n from 'i18next';
 import schema from './schema';
 import state from './state';
 import renderError from './components/Error';
+import renderSuccessMessage from './components/SuccessMessage';
 import renderFeeds from './components/Feeds';
 import renderPosts from './components/Posts';
+import renderSubmitButton from './components/SubmitButton';
 import { subscribe } from './subscribe';
-import i18nPromise, { INVALID_RSS } from './i18n';
+import i18nPromise, { INVALID_RSS, SUCCESS_MESSAGE, GENERIC_ERROR } from './i18n';
 import http from './http';
 
 i18nPromise
@@ -16,8 +18,8 @@ i18nPromise
 subscribe(renderError);
 subscribe(renderFeeds);
 subscribe(renderPosts);
-
-const submitRss = (rss) => Promise.resolve(rss);
+subscribe(renderSubmitButton);
+subscribe(renderSuccessMessage);
 
 const rssForm = document.getElementById('rss-form');
 
@@ -27,11 +29,12 @@ rssForm.addEventListener('submit', (event) => {
   const url = formData.get('url');
   schema
     .validate([...state.rssUrls, url])
-    .then(() => submitRss(url))
     .then(() => {
       state.error = null;
+      state.successMessage = null;
+      state.loading = true;
+      return http.get('url', { params: { url } });
     })
-    .then(() => http.get('url', { params: { url } }))
     .then((response) => response.data)
     .then((data) => {
       if (data.status.error) {
@@ -65,17 +68,18 @@ rssForm.addEventListener('submit', (event) => {
           link: item.querySelector('link').textContent,
           pubDate: item.querySelector('pubDate').textContent,
         }));
-      return { title: title.textContent, description: description.textContent, posts };
-    })
-    .then(({ title, description, posts }) => {
-      state.feeds.push({ title, description });
-      return posts;
-    })
-    .then((posts) => {
+      state.feeds.push({ title: title.textContent, description: description.textContent });
       state.posts = state.posts.concat(posts);
+      state.rssUrls.push(url);
+      state.successMessage = i18n.t(SUCCESS_MESSAGE);
     })
-    .then(() => state.rssUrls.push(url))
     .catch((error) => {
+      if (!error.message?.default) {
+        state.error = i18n.t(GENERIC_ERROR);
+      }
       state.error = i18n.t(error.message.default);
+    })
+    .finally(() => {
+      state.loading = false;
     });
 });
