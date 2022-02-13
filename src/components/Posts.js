@@ -1,7 +1,21 @@
 import i18n from 'i18next';
 import { POSTS_TITLE, SHOW } from '../i18n';
+import state from '../state';
 
 const postsElement = document.getElementById('posts');
+const modalElement = document.getElementById('modal');
+const modalTitleElement = document.getElementById('modal-title');
+const modalBodyElement = document.getElementById('modal-body');
+const modalLinkElement = document.getElementById('modal-link');
+
+modalElement.addEventListener('show.bs.modal', (event) => {
+  const postId = event.relatedTarget.dataset.id;
+  const postToShow = state.posts.find((post) => post.id === postId);
+  modalTitleElement.innerHTML = postToShow.title;
+  modalBodyElement.innerHTML = postToShow.description;
+  modalLinkElement.setAttribute('href', postToShow.link);
+  postToShow.visited = true;
+});
 
 const render = (posts) => {
   if (!posts.length) {
@@ -9,10 +23,24 @@ const render = (posts) => {
   }
   const postElements = posts.map((post) => `
     <li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
-      <a href="${post.link}" class="fw-bold" data-id="6" target="_blank" rel="noopener noreferrer">
+      <a
+        href="${post.link}"
+        class="${post.visited ? 'fw-normal link-secondary' : 'fw-bold'}"
+        data-id="${post.id}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         ${post.title}
       </a>
-      <button type="button" class="btn btn-outline-primary btn-sm" data-id="6" data-bs-toggle="modal" data-bs-target="#modal">
+      <button
+        type="button"
+        class="btn
+        btn-outline-primary
+        btn-sm"
+        data-id="${post.id}"
+        data-bs-toggle="modal"
+        data-bs-target="#modal"
+      >
         ${i18n.t(SHOW)}
       </button>
     </li>
@@ -35,9 +63,10 @@ const render = (posts) => {
 };
 
 export default (path, value) => {
-  if (path !== 'posts') {
-    return;
+  if (path === 'posts') {
+    render(value);
   }
-
-  render(value);
+  if (/posts\.\d+\.visited/.test(path)) {
+    render(state.posts);
+  }
 };

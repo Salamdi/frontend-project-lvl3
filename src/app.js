@@ -1,3 +1,4 @@
+import 'bootstrap';
 import './index.scss';
 import i18n from 'i18next';
 import schema from './schema';

@@ -11,7 +11,9 @@ const render = (value) => {
 };
 
 export default (path, value) => {
-  if (path === 'error') {
-    render(value);
+  if (path !== 'error') {
+    return;
   }
+
+  render(value);
 };
