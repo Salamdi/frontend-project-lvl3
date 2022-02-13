@@ -29,7 +29,7 @@ export default i18next.init({
       translation: {
         [URL_DUPLICATION]: 'RSS уже существует',
         [INVALID_URL]: 'Ссылка должна быть валидным URL',
-        [INVALID_RSS]: 'Невалидный RSS',
+        [INVALID_RSS]: 'Ресурс не содержит валидный RSS',
         [FEEDS_TITLE]: 'Фиды',
         [POSTS_TITLE]: 'Посты',
         [SHOW]: 'Просмотр',
