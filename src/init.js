@@ -10,14 +10,14 @@ import renderPosts from './components/Posts';
 import renderSubmitButton from './components/SubmitButton';
 import renderRssInput from './components/rssInput';
 import startWorker from './rssWorker';
+import './components/TopSection';
+import './components/Modal';
 import { subscribe } from './subscribe';
-import i18nPromise, { INVALID_RSS, SUCCESS_MESSAGE, GENERIC_ERROR } from './i18n';
+import {
+  INVALID_RSS, SUCCESS_MESSAGE, GENERIC_ERROR, NETWORK_ERROR,
+} from './i18n';
 import http from './http';
 import parseXML from './parseXML';
-
-i18nPromise
-  .then(() => console.log('initialized...'))
-  .catch(console.error);
 
 subscribe(renderError);
 subscribe(renderFeeds);
@@ -63,10 +63,15 @@ rssForm.addEventListener('submit', (event) => {
       state.successMessage = i18n.t(SUCCESS_MESSAGE);
     })
     .catch((error) => {
+      state.successMessage = null;
+      if (error.message === 'Network Error') {
+        state.error = i18n.t(NETWORK_ERROR);
+        return;
+      }
       if (!error.message?.default) {
         state.error = i18n.t(GENERIC_ERROR);
+        return;
       }
-      state.successMessage = null;
       state.error = i18n.t(error.message.default);
     })
     .finally(() => {

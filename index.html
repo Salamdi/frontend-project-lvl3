@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Hexlet Frontend Project</title>
 </head>
 
 <body>
@@ -18,8 +18,8 @@
         </div>
         <div id="modal-body" class="modal-body"></div>
         <div class="modal-footer"><a id="modal-link" class="btn btn-primary full-article" href="#" role="button" target="_blank"
-            rel="noopener noreferrer">Read all</a><button type="button" class="btn btn-secondary"
-            data-bs-dismiss="modal">Close</button></div>
+            rel="noopener noreferrer">Читать полностью</a><button id="dismiss-button" type="button" class="btn btn-secondary"
+            data-bs-dismiss="modal">Закрыть</button></div>
       </div>
     </div>
   </div>
@@ -27,25 +27,25 @@
     <section class="container-fluid bg-dark p-5">
       <div class="row">
         <div class="col-md-10 col-lg-8 mx-auto text-white">
-          <h1 class="display-3 mb-0">RSS Aggregator</h1>
-          <p class="lead">Start reading RSS today! It is easy, it is beautiful</p>
+          <h1 id="head-title" class="display-3 mb-0">RSS агрегатор</h1>
+          <p id="head-text" class="lead">Начните читать RSS сегодня! Это легко, это красиво.</p>
           <form action id="rss-form" class="text-body">
             <div class="row">
               <div class="col">
                 <div class="form-floating">
                   <input id="rss-input" autofocus required name="url" aria-label="url" class="form-control w-100"
-                    placeholder="RSS link" autocomlete="off" autocomplete="off">
-                  <label for="rss-input">RSS link</label>
+                    placeholder="Ссылка RSS" autocomlete="off" autocomplete="off">
+                  <label id="rss-label" for="rss-input">Ссылка RSS</label>
                 </div>
               </div>
               <div class="col-auto">
                 <button id="submit-button" type="submit" aria-label="add" class="h-100 btn btn-lg btn-primary px-sm-5">
-                  Add
+                  Добавить
                 </button>
               </div>
             </div>
           </form>
-          <p class="mt-2 mb-0 text-muted">Example: https://ru.hexlet.io/lessons.rss</p>
+          <p id="example" class="mt-2 mb-0 text-muted">Пример: https://ru.hexlet.io/lessons.rss</p>
           <p id="error-message" class="feedback m-0 position-absolute small text-danger d-none"></p>
           <p id="success-message" class="feedback m-0 position-absolute small text-success d-none"></p>
         </div>

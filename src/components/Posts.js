@@ -3,19 +3,6 @@ import { POSTS_TITLE, SHOW } from '../i18n';
 import state from '../state';
 
 const postsElement = document.getElementById('posts');
-const modalElement = document.getElementById('modal');
-const modalTitleElement = document.getElementById('modal-title');
-const modalBodyElement = document.getElementById('modal-body');
-const modalLinkElement = document.getElementById('modal-link');
-
-modalElement.addEventListener('show.bs.modal', (event) => {
-  const postId = event.relatedTarget.dataset.id;
-  const postToShow = state.posts.find((post) => post.id === postId);
-  modalTitleElement.innerHTML = postToShow.title;
-  modalBodyElement.innerHTML = postToShow.description;
-  modalLinkElement.setAttribute('href', postToShow.link);
-  postToShow.visited = true;
-});
 
 const render = (posts) => {
   if (!posts.length) {
