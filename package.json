@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "",
     "scripts": {
-        "build": "webpack",
+        "webpack": "webpack",
         "test": "jest --colors",
         "dev": "webpack serve"
     },
