@@ -5,7 +5,7 @@ import initSuccessMessage from './components/SuccessMessage';
 import initFeeds from './components/Feeds';
 import initPosts from './components/Posts';
 import initSubmitButton from './components/SubmitButton';
-import initRssInput from './components/RssInput';
+import initRssInput from './components/rssInput';
 import initRssForm from './components/RssForm';
 import initModal from './components/Modal';
 import initTopSection from './components/TopSection';
