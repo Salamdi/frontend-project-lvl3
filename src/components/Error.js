@@ -1,19 +1,21 @@
-const errorMessageElement = document.getElementById('error-message');
+export default () => {
+  const errorMessageElement = document.getElementById('error-message');
 
-const render = (value) => {
-  if (value === null) {
-    errorMessageElement.classList.add('d-none');
-    return;
-  }
+  const render = (value) => {
+    if (value === null) {
+      errorMessageElement.classList.add('d-none');
+      return;
+    }
 
-  errorMessageElement.textContent = value;
-  errorMessageElement.classList.remove('d-none');
-};
+    errorMessageElement.textContent = value;
+    errorMessageElement.classList.remove('d-none');
+  };
 
-export default (path, value) => {
-  if (path !== 'error') {
-    return;
-  }
+  return (path, value) => {
+    if (path !== 'error') {
+      return;
+    }
 
-  render(value);
+    render(value);
+  };
 };

@@ -1,17 +1,19 @@
-const submitElement = document.getElementById('submit-button');
+export default () => {
+  const submitElement = document.getElementById('submit-button');
 
-const render = (disabled) => {
-  if (disabled) {
-    submitElement.setAttribute('disabled', disabled);
-  } else {
-    submitElement.removeAttribute('disabled');
-  }
-};
+  const render = (disabled) => {
+    if (disabled) {
+      submitElement.setAttribute('disabled', disabled);
+    } else {
+      submitElement.removeAttribute('disabled');
+    }
+  };
 
-export default (path, value) => {
-  if (path !== 'loading') {
-    return;
-  }
+  return (path, value) => {
+    if (path !== 'loading') {
+      return;
+    }
 
-  render(value);
+    render(value);
+  };
 };

@@ -17,8 +17,8 @@ export const EXAMPLE = 'EXAMPLE';
 export const NETWORK_ERROR = 'NETWORK_ERROR';
 export const ADD = 'ADD';
 
-export default i18next.init({
-  debug: true,
+export default i18next.createInstance({
+  debug: process.env.NODE_ENV === 'development',
   lng: 'en',
   resources: {
     en: {

@@ -1,14 +1,14 @@
-import i18n from 'i18next';
-import { POSTS_TITLE, SHOW } from '../i18n';
+import i18nInstance, { POSTS_TITLE, SHOW } from '../i18n';
 import state from '../state';
 
-const postsElement = document.getElementById('posts');
+export default () => {
+  const postsElement = document.getElementById('posts');
 
-const render = (posts) => {
-  if (!posts.length) {
-    return;
-  }
-  const postElements = posts.map((post) => `
+  const render = (posts) => {
+    if (!posts.length) {
+      return;
+    }
+    const postElements = posts.map((post) => `
     <li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
       <a
         href="${post.link}"
@@ -28,16 +28,16 @@ const render = (posts) => {
         data-bs-toggle="modal"
         data-bs-target="#modal"
       >
-        ${i18n.t(SHOW)}
+        ${i18nInstance.t(SHOW)}
       </button>
     </li>
   `).join('\n');
 
-  const card = `
+    const card = `
     <div class="card border-0">
       <div class="card-body">
         <h2 class="card-title h4">
-          ${i18n.t(POSTS_TITLE)}
+          ${i18nInstance.t(POSTS_TITLE)}
         </h2>
       </div>
       <ul class="list-group border-0 rounded-0">
@@ -46,14 +46,15 @@ const render = (posts) => {
     </div>
   `;
 
-  postsElement.innerHTML = card;
-};
+    postsElement.innerHTML = card;
+  };
 
-export default (path, value) => {
-  if (path === 'posts') {
-    render(value);
-  }
-  if (/posts\.\d+\.visited/.test(path)) {
-    render(state.posts);
-  }
+  return (path, value) => {
+    if (path === 'posts') {
+      render(value);
+    }
+    if (/posts\.\d+\.visited/.test(path)) {
+      render(state.posts);
+    }
+  };
 };
