@@ -23,7 +23,7 @@ export default () => {
       })
       .then((response) => response.data)
       .then((data) => {
-        if (data.status.error) {
+        if (data.status?.error) {
           const error = new Error();
           error.message = { default: INVALID_RSS };
           throw error;
