@@ -1,12 +1,11 @@
-import http from '../http';
-import parseXML from '../parseXML';
+import http from '../http.js';
+import parseXML from '../parseXML.js';
 import i18nInstance, {
   SUCCESS_MESSAGE, NETWORK_ERROR, GENERIC_ERROR, INVALID_RSS,
-} from '../i18n';
-import schema from '../schema';
-import state from '../state';
+} from '../i18n.js';
+import schema from '../schema.js';
 
-export default () => {
+export default (state) => {
   const rssForm = document.getElementById('rss-form');
 
   rssForm.addEventListener('submit', (event) => {
@@ -41,8 +40,10 @@ export default () => {
         state.posts = state.posts.concat(posts);
         state.rssUrls.push(url);
         state.successMessage = i18nInstance.t(SUCCESS_MESSAGE);
+        state.loading = false;
       })
       .catch((error) => {
+        state.loading = false;
         state.successMessage = null;
         if (error.message === 'Network Error') {
           state.error = i18nInstance.t(NETWORK_ERROR);
@@ -53,9 +54,6 @@ export default () => {
           return;
         }
         state.error = i18nInstance.t(error.message.default);
-      })
-      .finally(() => {
-        state.loading = false;
       });
   });
 };

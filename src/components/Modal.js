@@ -1,7 +1,6 @@
-import i18nInstance, { CLOSE, READ_ALL } from '../i18n';
-import state from '../state';
+import i18nInstance, { CLOSE, READ_ALL } from '../i18n.js';
 
-export default () => {
+export default (state) => {
   const modalElement = document.getElementById('modal');
   const modalTitleElement = document.getElementById('modal-title');
   const modalBodyElement = document.getElementById('modal-body');

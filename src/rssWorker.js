@@ -1,13 +1,11 @@
-import differenceBy from 'lodash/differenceBy';
-import http from './http';
-import parseXML from './parseXML';
-import state from './state';
+import differenceBy from 'lodash/differenceBy.js';
+import http from './http.js';
+import parseXML from './parseXML.js';
 
-export default () => {
+export default (state) => {
   const WORKER_TIMEOUT = 5000;
 
   const runWorker = () => {
-
     setTimeout(() => {
       state.rssUrls.forEach((url) => {
         http.get('', { params: { url } })

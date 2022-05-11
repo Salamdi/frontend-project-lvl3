@@ -1,4 +1,4 @@
-import { INVALID_RSS } from './i18n';
+import { INVALID_RSS } from './i18n.js';
 
 export default (data) => {
   const domParser = new DOMParser();

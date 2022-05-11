@@ -1,4 +1,4 @@
-import i18nInstance, { FEEDS_TITLE } from '../i18n';
+import i18nInstance, { FEEDS_TITLE } from '../i18n.js';
 
 export default () => {
   const feeds = document.getElementById('feeds');

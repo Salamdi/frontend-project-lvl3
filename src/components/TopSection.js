@@ -1,6 +1,6 @@
 import i18nInstance, {
   READ_RSS_TODAY, RSS_AGGREGATOR, RSS_LINK, ADD, EXAMPLE,
-} from '../i18n';
+} from '../i18n.js';
 
 export default () => {
   const headTitle = document.getElementById('head-title');

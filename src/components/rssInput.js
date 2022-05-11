@@ -1,7 +1,7 @@
 export default () => {
   const rssInputElement = document.getElementById('rss-input');
 
-  const render = (successMessage) => {
+  const renderMessage = (successMessage) => {
     if (successMessage === null) {
       return;
     }
@@ -9,11 +9,25 @@ export default () => {
     rssInputElement.value = '';
   };
 
-  return (path, value) => {
-    if (path !== 'successMessage') {
-      return;
+  const renderInput = (disabled) => {
+    if (disabled) {
+      rssInputElement.setAttribute('readonly', disabled);
+    } else {
+      rssInputElement.removeAttribute('readonly');
+      rssInputElement.focus();
     }
+  };
 
-    render(value);
+  return (path, value) => {
+    switch (path) {
+      case 'successMessage':
+        renderMessage(value);
+        break;
+      case 'loading':
+        renderInput(value);
+        break;
+      default:
+        break;
+    }
   };
 };

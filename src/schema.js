@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { INVALID_URL, URL_DUPLICATION } from './i18n';
+import { INVALID_URL, URL_DUPLICATION } from './i18n.js';
 
 yup.setLocale({
   string: {

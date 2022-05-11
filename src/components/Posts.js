@@ -1,7 +1,6 @@
-import i18nInstance, { POSTS_TITLE, SHOW } from '../i18n';
-import state from '../state';
+import i18nInstance, { POSTS_TITLE, SHOW } from '../i18n.js';
 
-export default () => {
+export default (state) => {
   const postsElement = document.getElementById('posts');
 
   const render = (posts) => {
