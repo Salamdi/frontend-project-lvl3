@@ -2,9 +2,9 @@ import differenceBy from 'lodash/differenceBy.js';
 import http from './http.js';
 import parseXML from './parseXML.js';
 
-export default (state) => {
-  const WORKER_TIMEOUT = 5000;
+const WORKER_TIMEOUT = 5000;
 
+export default (state) => {
   const runWorker = () => {
     setTimeout(() => {
       state.rssUrls.forEach((url) => {
