@@ -9,10 +9,9 @@ export default (state) => {
     setTimeout(() => {
       state.rssUrls.forEach((url) => {
         http.get('', { params: { url } })
-          .then((response) => response.data.contents)
-          .then(parseXML)
-          .then(({ posts }) => differenceBy(posts, state.posts, 'id'))
-          .then((freshPosts) => {
+          .then((response) => {
+            const { posts } = parseXML(response.data.contents);
+            const freshPosts = differenceBy(posts, state.posts);
             state.posts = state.posts.concat(freshPosts);
           })
           .catch(console.error);
@@ -21,13 +20,5 @@ export default (state) => {
     }, WORKER_TIMEOUT);
   };
 
-  return (path, _, previousValue) => {
-    if (path !== 'rssUrls') {
-      return;
-    }
-    if (previousValue.length !== 0) {
-      return;
-    }
-    runWorker();
-  };
+  runWorker();
 };
