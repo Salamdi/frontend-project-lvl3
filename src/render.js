@@ -34,10 +34,10 @@ const renderFeeds = (feedList, feedsElement) => {
 };
 
 const renderPostLink = (post) => {
-  const link = document.querySelector(`a[data-id=${post.id}`);
+  const link = document.querySelector(`a[data-id="${post.id}"]`);
   if (post.visited) {
     link.classList.add('fw-normal', 'link-secondary');
-    link.classList.remove('fw-bolD');
+    link.classList.remove('fw-bold');
   } else {
     link.classList.add('fw-bold');
     link.classList.remove('fw-normal', 'link-secondary');
@@ -160,7 +160,7 @@ export default () => {
         break;
       }
       default:
-        if (/posts\.\d+\.visited/.test(path)) {
+        if (/posts\.\d+/.test(path)) {
           renderPostLink(value);
         }
         break;

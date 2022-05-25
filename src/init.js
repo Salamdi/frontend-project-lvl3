@@ -109,7 +109,8 @@ export default (appState = {}) => {
         modalTitleElement.innerHTML = postToShow.title;
         modalBodyElement.innerHTML = postToShow.description;
         modalLinkElement.setAttribute('href', postToShow.link);
-        postToShow.visited = true;
+        const postIndex = state.posts.indexOf(postToShow);
+        state.posts[postIndex] = { ...postToShow, visited: true };
       });
     });
 };
