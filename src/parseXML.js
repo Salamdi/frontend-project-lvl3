@@ -12,14 +12,14 @@ export default (data) => {
   const description = xmlDocument.querySelector('channel description');
   if (!title || !description) {
     const error = new Error();
-    error.message = { default: INVALID_RSS };
+    error.invalidRss = true;
     throw error;
   }
   const link = xmlDocument.querySelector('link');
   const items = xmlDocument.querySelectorAll('channel item');
   const posts = Array.from(items)
     .map((item) => ({
-      id: item.querySelector('guid').textContent,
+      id: item.querySelector('guid')?.textContent ?? item.querySelector('description'),
       title: item.querySelector('title').textContent,
       description: item.querySelector('description').textContent,
       link: item.querySelector('link').textContent,

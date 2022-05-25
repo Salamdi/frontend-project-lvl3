@@ -1,13 +1,7 @@
-import i18nInstance, { FEEDS_TITLE, POSTS_TITLE, SHOW } from './i18n.js';
+import i18nInstance, { FEEDS_TITLE, POSTS_TITLE, SHOW, SUCCESS_MESSAGE } from './i18n.js';
 
 const renderError = (error, errorElement) => {
-  if (error === null) {
-    errorElement.classList.add('d-none');
-    return;
-  }
-
   errorElement.textContent = error;
-  errorElement.classList.remove('d-none');
 };
 
 const renderFeeds = (feedList, feedsElement) => {
@@ -109,16 +103,20 @@ const renderRssForm = (
   switch (state) {
     case 'success':
       successMessageElement.classList.remove('d-none');
-      rssInputElement.value = '';
+      rssInputElement.removeAttribute('readonly');
       submitElement.removeAttribute('disabled', false);
+      rssInputElement.value = '';
       break;
     case 'loading':
       rssInputElement.setAttribute('readonly', true);
       submitElement.setAttribute('disabled', true);
+      errorElement.classList.add('d-none');
+      successMessageElement.classList.add('d-none');
       break;
     case 'fail':
-      errorElement.classList.add('d-none');
+      errorElement.classList.remove('d-none');
       rssInputElement.removeAttribute('readonly');
+      submitElement.removeAttribute('disabled', false);
       break;
     default:
       break;
@@ -132,6 +130,8 @@ export default () => {
   const rssInputElement = document.getElementById('rss-input');
   const submitElement = document.getElementById('submit-button');
   const successMessageElement = document.getElementById('success-message');
+
+  successMessageElement.innerHTML = i18nInstance.t(SUCCESS_MESSAGE);
 
   return (path, value) => {
     switch (path) {
