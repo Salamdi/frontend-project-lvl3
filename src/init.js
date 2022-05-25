@@ -46,14 +46,13 @@ export default (appState = {}) => {
 
   i18nInstance.init()
     .then(() => {
-      const render = makeRender();
       headTitle.innerHTML = i18nInstance.t(RSS_AGGREGATOR);
       headText.innerHTML = i18nInstance.t(READ_RSS_TODAY);
       rssInput.setAttribute('placeholder', i18nInstance.t(RSS_LINK));
       rssLabel.innerHTML = i18nInstance.t(RSS_LINK);
       submitButton.innerHTML = i18nInstance.t(ADD);
       example.innerHTML = i18nInstance.t(EXAMPLE);
-      const state = onChange({ ...initState, ...appState }, render);
+      const state = onChange({ ...initState, ...appState }, makeRender());
       startWorker(state);
       rssForm.addEventListener('submit', (event) => {
         event.preventDefault();
