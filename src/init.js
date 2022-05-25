@@ -1,6 +1,7 @@
 import 'bootstrap';
 import './index.scss';
 import onChange from 'on-change';
+import { ValidationError } from 'yup';
 import startWorker from './rssWorker.js';
 import makeRender from './render.js';
 import http from './http.js';
@@ -19,7 +20,6 @@ import i18nInstance, {
   EXAMPLE,
 } from './i18n.js';
 import schema from './schema.js';
-import { ValidationError } from 'yup';
 
 export default (appState = {}) => {
   const initState = {
@@ -73,7 +73,9 @@ export default (appState = {}) => {
               error.message = { default: INVALID_RSS };
               throw error;
             }
-            const { title, description, id, posts } = parseXML(data.contents);
+            const {
+              title, description, id, posts,
+            } = parseXML(data.contents);
             state.feeds.push({ title, description, id });
             state.posts = state.posts.concat(posts);
             state.rssUrls.push(url);

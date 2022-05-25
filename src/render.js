@@ -1,4 +1,6 @@
-import i18nInstance, { FEEDS_TITLE, POSTS_TITLE, SHOW, SUCCESS_MESSAGE } from './i18n.js';
+import i18nInstance, {
+  FEEDS_TITLE, POSTS_TITLE, SHOW, SUCCESS_MESSAGE,
+} from './i18n.js';
 
 const renderError = (error, errorElement) => {
   errorElement.textContent = error;
