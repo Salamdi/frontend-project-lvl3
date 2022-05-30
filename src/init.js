@@ -11,8 +11,6 @@ import i18nInstance, {
   NETWORK_ERROR,
   GENERIC_ERROR,
   INVALID_RSS,
-  READ_ALL,
-  CLOSE,
 } from './i18n.js';
 import schema from './schema.js';
 
@@ -24,13 +22,10 @@ export default (appState = {}) => {
     posts: [],
     rssForm: 'initial',
     lng: 'ru',
+    postToShow: null,
   };
 
   const modalElement = document.getElementById('modal');
-  const modalTitleElement = document.getElementById('modal-title');
-  const modalBodyElement = document.getElementById('modal-body');
-  const modalLinkElement = document.getElementById('modal-link');
-  const dismissButton = document.getElementById('dismiss-button');
   const rssForm = document.getElementById('rss-form');
 
   i18nInstance.init({
@@ -89,14 +84,10 @@ export default (appState = {}) => {
           });
       });
 
-      modalLinkElement.innerHTML = i18nInstance.t(READ_ALL);
-      dismissButton.innerHTML = i18nInstance.t(CLOSE);
       modalElement.addEventListener('show.bs.modal', (event) => {
         const postId = event.relatedTarget.dataset.id;
         const postToShow = state.posts.find((post) => post.id === postId);
-        modalTitleElement.innerHTML = postToShow.title;
-        modalBodyElement.innerHTML = postToShow.description;
-        modalLinkElement.setAttribute('href', postToShow.link);
+        state.postToShow = postToShow;
         const postIndex = state.posts.indexOf(postToShow);
         state.posts[postIndex] = { ...postToShow, visited: true };
       });

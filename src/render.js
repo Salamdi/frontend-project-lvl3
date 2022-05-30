@@ -42,6 +42,14 @@ const rerenderTexts = (prevLng) => {
   setText(document.getElementById('head-text'), i18nInstance.t(READ_RSS_TODAY));
   setText(document.getElementById('rss-label'), i18nInstance.t(RSS_LINK));
   setText(document.getElementById('example'), i18nInstance.t(EXAMPLE));
+  setText(document.getElementById('modal-link'), i18nInstance.t(READ_ALL));
+  setText(document.getElementById('dismiss-button'), i18nInstance.t(CLOSE));
+};
+
+const renderModalContent = (post) => {
+  setText(document.getElementById('modal-title'), post.title);
+  setText(document.getElementById('modal-body'), post.description);
+  document.getElementById('modal-link').setAttribute('href', post.link);
 };
 
 const renderMessage = (message, messageElement) => {
@@ -201,6 +209,10 @@ export default () => {
       }
       case 'lng': {
         rerenderTexts(previousValue);
+        break;
+      }
+      case 'postToShow': {
+        renderModalContent(value);
         break;
       }
       default:
