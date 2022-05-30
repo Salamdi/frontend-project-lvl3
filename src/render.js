@@ -1,9 +1,51 @@
+import head from 'lodash/head.js';
 import i18nInstance, {
-  FEEDS_TITLE, POSTS_TITLE, SHOW, SUCCESS_MESSAGE,
+  ADD,
+  EXAMPLE,
+  FEEDS_TITLE,
+  POSTS_TITLE,
+  READ_ALL,
+  READ_RSS_TODAY,
+  RSS_AGGREGATOR,
+  RSS_LINK,
+  SHOW,
+  CLOSE,
 } from './i18n.js';
 
-const renderError = (error, errorElement) => {
-  errorElement.textContent = error;
+const setText = (node, text) => {
+  if (node === null) {
+    return;
+  }
+  if (node instanceof NodeList) {
+    node.forEach((element) => {
+      element.textContent = text;
+    });
+  }
+  node.textContent = text;
+};
+
+const rerenderTexts = (prevLng) => {
+  const messageElement = document.getElementById('message');
+  if (messageElement) {
+    const key = head(Object.entries(i18nInstance.store.data[prevLng]?.translation ?? {})
+      .find(([, value]) => value === messageElement.textContent.trim()));
+    messageElement.textContent = i18nInstance.t(key);
+  }
+  document.getElementById('rss-input').setAttribute('placeholder', i18nInstance.t(RSS_LINK));
+  setText(document.getElementById('feeds')?.querySelector('.card-title'), i18nInstance.t(FEEDS_TITLE));
+  setText(document.getElementById('posts')?.querySelector('.card-title'), i18nInstance.t(POSTS_TITLE));
+  setText(document.getElementById('posts')?.querySelectorAll('button.btn'), i18nInstance.t(SHOW));
+  setText(document.getElementById('submit-button'), i18nInstance.t(ADD));
+  setText(document.getElementById('modal-link'), i18nInstance.t(READ_ALL));
+  setText(document.getElementById('dismiss-button'), i18nInstance.t(CLOSE));
+  setText(document.getElementById('head-title'), i18nInstance.t(RSS_AGGREGATOR));
+  setText(document.getElementById('head-text'), i18nInstance.t(READ_RSS_TODAY));
+  setText(document.getElementById('rss-label'), i18nInstance.t(RSS_LINK));
+  setText(document.getElementById('example'), i18nInstance.t(EXAMPLE));
+};
+
+const renderMessage = (message, messageElement) => {
+  messageElement.textContent = i18nInstance.t(message);
 };
 
 const renderFeeds = (feedList, feedsElement) => {
@@ -99,12 +141,13 @@ const renderRssForm = (
   state,
   rssInputElement,
   submitElement,
-  successMessageElement,
-  errorElement,
+  messageElement,
 ) => {
   switch (state) {
     case 'success':
-      successMessageElement.classList.remove('d-none');
+      messageElement.classList.remove('text-danger');
+      messageElement.classList.add('text-success');
+      messageElement.classList.remove('d-none');
       rssInputElement.removeAttribute('readonly');
       submitElement.removeAttribute('disabled', false);
       rssInputElement.value = '';
@@ -112,11 +155,12 @@ const renderRssForm = (
     case 'loading':
       rssInputElement.setAttribute('readonly', true);
       submitElement.setAttribute('disabled', true);
-      errorElement.classList.add('d-none');
-      successMessageElement.classList.add('d-none');
+      messageElement.classList.add('d-none');
       break;
     case 'fail':
-      errorElement.classList.remove('d-none');
+      messageElement.classList.remove('text-success');
+      messageElement.classList.add('text-danger');
+      messageElement.classList.remove('d-none');
       rssInputElement.removeAttribute('readonly');
       submitElement.removeAttribute('disabled', false);
       break;
@@ -126,19 +170,16 @@ const renderRssForm = (
 };
 
 export default () => {
-  const errorMessageElement = document.getElementById('error-message');
+  const messageElement = document.getElementById('message');
   const feedsElement = document.getElementById('feeds');
   const postsElement = document.getElementById('posts');
   const rssInputElement = document.getElementById('rss-input');
   const submitElement = document.getElementById('submit-button');
-  const successMessageElement = document.getElementById('success-message');
 
-  successMessageElement.innerHTML = i18nInstance.t(SUCCESS_MESSAGE);
-
-  return (path, value) => {
+  return (path, value, previousValue) => {
     switch (path) {
-      case 'error': {
-        renderError(value, errorMessageElement);
+      case 'message': {
+        renderMessage(value, messageElement);
         break;
       }
       case 'feeds': {
@@ -154,9 +195,12 @@ export default () => {
           value,
           rssInputElement,
           submitElement,
-          successMessageElement,
-          errorMessageElement,
+          messageElement,
         );
+        break;
+      }
+      case 'lng': {
+        rerenderTexts(previousValue);
         break;
       }
       default:

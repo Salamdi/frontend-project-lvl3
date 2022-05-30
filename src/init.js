@@ -13,22 +13,17 @@ import i18nInstance, {
   INVALID_RSS,
   READ_ALL,
   CLOSE,
-  RSS_AGGREGATOR,
-  READ_RSS_TODAY,
-  RSS_LINK,
-  ADD,
-  EXAMPLE,
 } from './i18n.js';
 import schema from './schema.js';
 
 export default (appState = {}) => {
   const initState = {
-    error: null,
-    successMessage: null,
+    message: null,
     rssUrls: [],
     feeds: [],
     posts: [],
     rssForm: 'initial',
+    lng: 'ru',
   };
 
   const modalElement = document.getElementById('modal');
@@ -37,22 +32,16 @@ export default (appState = {}) => {
   const modalLinkElement = document.getElementById('modal-link');
   const dismissButton = document.getElementById('dismiss-button');
   const rssForm = document.getElementById('rss-form');
-  const headTitle = document.getElementById('head-title');
-  const headText = document.getElementById('head-text');
-  const rssInput = document.getElementById('rss-input');
-  const rssLabel = document.getElementById('rss-label');
-  const submitButton = document.getElementById('submit-button');
-  const example = document.getElementById('example');
 
-  i18nInstance.init()
+  i18nInstance.init({
+    debug: process.env.NODE_ENV === 'development',
+    lng: appState.lng ?? initState.lng,
+  })
     .then(() => {
-      headTitle.innerHTML = i18nInstance.t(RSS_AGGREGATOR);
-      headText.innerHTML = i18nInstance.t(READ_RSS_TODAY);
-      rssInput.setAttribute('placeholder', i18nInstance.t(RSS_LINK));
-      rssLabel.innerHTML = i18nInstance.t(RSS_LINK);
-      submitButton.innerHTML = i18nInstance.t(ADD);
-      example.innerHTML = i18nInstance.t(EXAMPLE);
       const state = onChange({ ...initState, ...appState }, makeRender());
+      i18nInstance.on('languageChanged', (lng) => {
+        state.lng = lng;
+      });
       startWorker(state);
       rssForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -62,8 +51,8 @@ export default (appState = {}) => {
         schema
           .validate([...state.rssUrls, url])
           .then(() => {
-            state.error = null;
-            state.successMessage = null;
+            state.message = null;
+            state.message = null;
             return http.get('', { params: { url } });
           })
           .then(({ data }) => {
@@ -78,25 +67,25 @@ export default (appState = {}) => {
             state.feeds.push({ title, description, id });
             state.posts = state.posts.concat(posts);
             state.rssUrls.push(url);
-            state.successMessage = i18nInstance.t(SUCCESS_MESSAGE);
+            state.message = SUCCESS_MESSAGE;
             state.rssForm = 'success';
           })
           .catch((error) => {
             state.rssForm = 'fail';
-            state.successMessage = null;
+            state.message = null;
             if (error instanceof ValidationError) {
-              state.error = i18nInstance.t(error.message.default);
+              state.message = error.message.default;
               return;
             }
             if (error.request) {
-              state.error = i18nInstance.t(NETWORK_ERROR);
+              state.message = NETWORK_ERROR;
               return;
             }
             if (error.invalidRss) {
-              state.error = i18nInstance.t(INVALID_RSS);
+              state.message = INVALID_RSS;
               return;
             }
-            state.error = i18nInstance.t(GENERIC_ERROR);
+            state.message = GENERIC_ERROR;
           });
       });
 
