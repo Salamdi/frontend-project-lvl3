@@ -42,8 +42,6 @@ const rerenderTexts = (prevLng) => {
   setText(document.getElementById('head-text'), i18nInstance.t(READ_RSS_TODAY));
   setText(document.getElementById('rss-label'), i18nInstance.t(RSS_LINK));
   setText(document.getElementById('example'), i18nInstance.t(EXAMPLE));
-  setText(document.getElementById('modal-link'), i18nInstance.t(READ_ALL));
-  setText(document.getElementById('dismiss-button'), i18nInstance.t(CLOSE));
 };
 
 const renderModalContent = (post) => {

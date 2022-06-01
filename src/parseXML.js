@@ -19,7 +19,7 @@ export default (data) => {
   const items = xmlDocument.querySelectorAll('channel item');
   const posts = Array.from(items)
     .map((item) => ({
-      id: item.querySelector('guid')?.textContent ?? item.querySelector('title').textContent,
+      id: item.querySelector('guid')?.textContent ?? item.querySelector('link').textContent,
       title: item.querySelector('title').textContent,
       description: item.querySelector('description').textContent,
       link: item.querySelector('link').textContent,
