@@ -75,15 +75,13 @@ const renderFeeds = (feedList, feedsElement) => {
     card.innerHTML = `
       <div class="card-body">
         <h2 class="card-title h4">
-          ${i18nInstance.t(FEEDS_TITLE)}
         </h2>
       </div>
       <ul class="list-group border-0 rounded-0">
-        ${feedElements}
       </ul>
     `;
     card.querySelector('h2.card-title.h4').textContent = i18nInstance.t(FEEDS_TITLE);
-    card.querySelector('ul.list-group').append(...feedsElement);
+    card.querySelector('ul.list-group').append(...feedElements);
     feedsElement.appendChild(card);
   }
 };
@@ -103,6 +101,7 @@ const renderPosts = (posts, postsElement) => {
   if (!posts.length) {
     return;
   }
+  postsElement.innerHTML = '';
   const postElements = posts.map((post) => {
     const li = document.createElement('li');
     li.classList.add(
@@ -110,12 +109,17 @@ const renderPosts = (posts, postsElement) => {
       'd-flex',
       'justify-content-between',
       'align-items-start',
-      'border-0 border-end-0',
+      'border-0',
+      'border-end-0',
     );
     li.setAttribute('id', post.id);
     const link = document.createElement('a');
     link.setAttribute('href', post.link);
-    link.classList.add(post.visited ? 'fw-normal link-secondary' : 'fw-bold');
+    if (post.visited) {
+      link.classList.add('fw-normal', 'link-secondary');
+    } else {
+      link.classList.add('fw-bold');
+    }
     link.setAttribute('data-id', post.id);
     link.textContent = post.title;
     const button = document.createElement('button');
@@ -142,12 +146,12 @@ const renderPosts = (posts, postsElement) => {
         </h2>
       </div>
       <ul class="list-group border-0 rounded-0">
-        ${postElements}
       </ul>
     </div>
   `;
-  card.querySelector('h2.card-title.h4').textContent(i18nInstance.t(POSTS_TITLE));
+  card.querySelector('h2.card-title.h4').textContent = i18nInstance.t(POSTS_TITLE);
   card.querySelector('ul.list-group').append(...postElements);
+  postsElement.appendChild(card);
 };
 
 const renderRssForm = (

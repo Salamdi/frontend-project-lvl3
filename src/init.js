@@ -7,7 +7,6 @@ import makeRender from './render.js';
 import http from './http.js';
 import parseXML from './parseXML.js';
 import i18nInstance, {
-  SUCCESS_MESSAGE,
   NETWORK_ERROR,
   GENERIC_ERROR,
   INVALID_RSS,
