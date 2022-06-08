@@ -16,7 +16,7 @@ import schema from './schema.js';
 
 export default (appState = {}) => {
   const initState = {
-    message: null,
+    error: null,
     rssUrls: [],
     feeds: [],
     posts: [],
@@ -45,42 +45,31 @@ export default (appState = {}) => {
         const url = formData.get('url');
         schema
           .validate([...state.rssUrls, url])
-          .then(() => {
-            state.message = null;
-            state.message = null;
-            return http.get('', { params: { url } });
-          })
+          .then(() => http.get('', { params: { url } }))
           .then(({ data }) => {
-            if (data.status?.error) {
-              const error = new Error();
-              error.message = { default: INVALID_RSS };
-              throw error;
-            }
             const {
               title, description, id, posts,
             } = parseXML(data.contents);
             state.feeds.push({ title, description, id });
             state.posts = state.posts.concat(posts);
             state.rssUrls.push(url);
-            state.message = SUCCESS_MESSAGE;
             state.rssForm = 'success';
           })
           .catch((error) => {
             state.rssForm = 'fail';
-            state.message = null;
             if (error instanceof ValidationError) {
-              state.message = error.message.default;
+              state.error = error.message.default;
               return;
             }
             if (error.request) {
-              state.message = NETWORK_ERROR;
+              state.error = NETWORK_ERROR;
               return;
             }
             if (error.invalidRss) {
-              state.message = INVALID_RSS;
+              state.error = INVALID_RSS;
               return;
             }
-            state.message = GENERIC_ERROR;
+            state.error = GENERIC_ERROR;
           });
       });
 

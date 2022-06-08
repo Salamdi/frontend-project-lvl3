@@ -10,6 +10,7 @@ import i18nInstance, {
   RSS_LINK,
   SHOW,
   CLOSE,
+  SUCCESS_MESSAGE,
 } from './i18n.js';
 
 const setText = (node, text) => {
@@ -50,34 +51,40 @@ const renderModalContent = (post) => {
   document.getElementById('modal-link').setAttribute('href', post.link);
 };
 
-const renderMessage = (message, messageElement) => {
+const renderError = (message, messageElement) => {
   messageElement.textContent = i18nInstance.t(message);
 };
 
 const renderFeeds = (feedList, feedsElement) => {
   if (feedList.length) {
-    const feedElements = feedList.map((feed) => `
-      <li class="list-group-item border-0 border-end-0">
-        <h3 class="h6 m-0">${feed.title}</h3>
+    feedsElement.innerHTML = '';
+    const feedElements = feedList.map((feed) => {
+      const li = document.createElement('li');
+      li.classList.add('list-group-item', 'border-0', 'border-end-0');
+      li.innerHTML = `
+        <h3 class="h6 m-0"></h3>
         <p class="m-0 small text-black-50">
-          ${feed.description}
         </p>
-      </li>
-    `).join('\n');
-    const card = `
-      <div class="card border-0">
-        <div class="card-body">
-          <h2 class="card-title h4">
-            ${i18nInstance.t(FEEDS_TITLE)}
-          </h2>
-        </div>
-        <ul class="list-group border-0 rounded-0">
-          ${feedElements}
-        </ul>
+      `;
+      li.querySelector('h3').textContent = feed.title;
+      li.querySelector('p').textContent = feed.description;
+      return li;
+    });
+    const card = document.createElement('div');
+    card.classList.add('card', 'border-0');
+    card.innerHTML = `
+      <div class="card-body">
+        <h2 class="card-title h4">
+          ${i18nInstance.t(FEEDS_TITLE)}
+        </h2>
       </div>
+      <ul class="list-group border-0 rounded-0">
+        ${feedElements}
+      </ul>
     `;
-
-    feedsElement.innerHTML = card;
+    card.querySelector('h2.card-title.h4').textContent = i18nInstance.t(FEEDS_TITLE);
+    card.querySelector('ul.list-group').append(...feedsElement);
+    feedsElement.appendChild(card);
   }
 };
 
@@ -96,43 +103,42 @@ const renderPosts = (posts, postsElement) => {
   if (!posts.length) {
     return;
   }
-  const postElements = posts.map((post) => `
-    <li
-      class="list-group-item
-      d-flex
-      justify-content-between
-      align-items-start
-      border-0 border-end-0"
-      id="${post.id}"
-    >
-      <a
-        href="${post.link}"
-        class="${post.visited ? 'fw-normal link-secondary' : 'fw-bold'}"
-        data-id="${post.id}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        ${post.title}
-      </a>
-      <button
-        type="button"
-        class="btn
-        btn-outline-primary
-        btn-sm"
-        data-id="${post.id}"
-        data-bs-toggle="modal"
-        data-bs-target="#modal"
-      >
-        ${i18nInstance.t(SHOW)}
-      </button>
-    </li>
-  `).join('\n');
+  const postElements = posts.map((post) => {
+    const li = document.createElement('li');
+    li.classList.add(
+      'list-group-item',
+      'd-flex',
+      'justify-content-between',
+      'align-items-start',
+      'border-0 border-end-0',
+    );
+    li.setAttribute('id', post.id);
+    const link = document.createElement('a');
+    link.setAttribute('href', post.link);
+    link.classList.add(post.visited ? 'fw-normal link-secondary' : 'fw-bold');
+    link.setAttribute('data-id', post.id);
+    link.textContent = post.title;
+    const button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.classList.add(
+      'btn',
+      'btn-outline-primary',
+      'btn-sm',
+    );
+    button.setAttribute('data-id', post.id);
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#modal');
+    button.textContent = i18nInstance.t(SHOW);
+    li.append(link, button);
+    return li;
+  });
+  const card = document.createElement('div');
+  card.classList.add('card', 'border-0');
 
-  const card = `
+  card.innerHTML = `
     <div class="card border-0">
       <div class="card-body">
         <h2 class="card-title h4">
-          ${i18nInstance.t(POSTS_TITLE)}
         </h2>
       </div>
       <ul class="list-group border-0 rounded-0">
@@ -140,7 +146,8 @@ const renderPosts = (posts, postsElement) => {
       </ul>
     </div>
   `;
-  postsElement.innerHTML = card;
+  card.querySelector('h2.card-title.h4').textContent(i18nInstance.t(POSTS_TITLE));
+  card.querySelector('ul.list-group').append(...postElements);
 };
 
 const renderRssForm = (
@@ -151,6 +158,7 @@ const renderRssForm = (
 ) => {
   switch (state) {
     case 'success':
+      messageElement.textContent = i18nInstance.t(SUCCESS_MESSAGE);
       messageElement.classList.remove('text-danger');
       messageElement.classList.add('text-success');
       messageElement.classList.remove('d-none');
@@ -184,8 +192,8 @@ export default () => {
 
   return (path, value, previousValue) => {
     switch (path) {
-      case 'message': {
-        renderMessage(value, messageElement);
+      case 'error': {
+        renderError(value, messageElement);
         break;
       }
       case 'feeds': {
