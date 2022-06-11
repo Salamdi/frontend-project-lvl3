@@ -56,23 +56,25 @@ const renderError = (message, messageElement) => {
 };
 
 const renderFeeds = (feedList, feedsElement) => {
-  if (feedList.length) {
-    feedsElement.innerHTML = '';
-    const feedElements = feedList.map((feed) => {
-      const li = document.createElement('li');
-      li.classList.add('list-group-item', 'border-0', 'border-end-0');
-      li.innerHTML = `
+  if (!feedList.length) {
+    return;
+  }
+  feedsElement.innerHTML = '';
+  const feedElements = feedList.map((feed) => {
+    const li = document.createElement('li');
+    li.classList.add('list-group-item', 'border-0', 'border-end-0');
+    li.innerHTML = `
         <h3 class="h6 m-0"></h3>
         <p class="m-0 small text-black-50">
         </p>
       `;
-      li.querySelector('h3').textContent = feed.title;
-      li.querySelector('p').textContent = feed.description;
-      return li;
-    });
-    const card = document.createElement('div');
-    card.classList.add('card', 'border-0');
-    card.innerHTML = `
+    li.querySelector('h3').textContent = feed.title;
+    li.querySelector('p').textContent = feed.description;
+    return li;
+  });
+  const card = document.createElement('div');
+  card.classList.add('card', 'border-0');
+  card.innerHTML = `
       <div class="card-body">
         <h2 class="card-title h4">
         </h2>
@@ -80,10 +82,9 @@ const renderFeeds = (feedList, feedsElement) => {
       <ul class="list-group border-0 rounded-0">
       </ul>
     `;
-    card.querySelector('h2.card-title.h4').textContent = i18nInstance.t(FEEDS_TITLE);
-    card.querySelector('ul.list-group').append(...feedElements);
-    feedsElement.appendChild(card);
-  }
+  card.querySelector('h2.card-title.h4').textContent = i18nInstance.t(FEEDS_TITLE);
+  card.querySelector('ul.list-group').append(...feedElements);
+  feedsElement.appendChild(card);
 };
 
 const renderPostLink = (post) => {
