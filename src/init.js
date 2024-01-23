@@ -20,7 +20,7 @@ export default (appState = {}) => {
     feeds: [],
     posts: [],
     rssForm: 'initial',
-    lng: 'ru',
+    lng: 'en',
     postToShow: null,
   };
 
