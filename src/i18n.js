@@ -19,7 +19,7 @@ export const ADD = 'ADD';
 
 export default i18next.createInstance({
   debug: process.env.NODE_ENV === 'development',
-  lng: 'ru',
+  lng: 'en',
   resources: {
     en: {
       translation: {
